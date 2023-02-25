@@ -1,1 +1,1 @@
-# -ts-todo-list
+# ts-todo-list
