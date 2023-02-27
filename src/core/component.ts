@@ -1,6 +1,18 @@
 export class component {
-  constructor() { }
+  $element: HTMLElement;
+  constructor({ element }: HTMLElement) {
+    this.$element = element;
+    this.setup();
+    this.render();
+  }
   setup() { }
-  template() { }
-  render() { }
+  setState() { }
+  setEvent() { }
+  template() { return ''; }
+  render() {
+    if (this.$element) this.$element.innerHTML = this.template();
+    this.setEvent();
+    this.onMounted();
+  }
+  onMounted() { }
 }
