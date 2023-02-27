@@ -1,5 +1,6 @@
 export class component {
   $element: HTMLElement;
+  state: [{}];
   constructor({ element }: HTMLElement) {
     this.$element = element;
     this.setup();

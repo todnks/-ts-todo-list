@@ -1,21 +1,28 @@
 import { component } from '../core/component';
 
 export class countcontainer extends component {
+
+  setup() {
+    this.state = JSON.parse(localStorage.getItem('todos'));
+  }
+
   template() {
+    let todoList: [] = [];
+    this.state?.forEach(({ title }) => {
+      todoList.push(title);
+    });
     return `
-    <div class="count-container">
-      <span class="todo-count">총0개</span>
-      <ul class="filters">
-        <li>
-          <a id="all" href="/#">전체보기</a>
-        </li>
-        <li>
-          <a id="active" href="/#active">해야할 일</a>
-        </li>
-        <li>
-          <a id="completed" href="/#completed">완료한 일</a>
-        </li>
-      </ul>
-    </div>`;
+    ${todoList.map((title) => (
+      `<li class="false">
+        <div class="view">
+          <input type="checkbox" class="toggle">
+          <label class="label">
+          ${title}
+          </label>
+          <button class="destroy"></button>
+        </div>
+      </li>`
+    )).join("")}
+    `;
   }
 }
