@@ -25,7 +25,7 @@ export class App extends component {
     <input class="new-todo" placeholder="할일을 추가해주세요" autofocus>
     <main>
     <ul id="todo-list" class="todo-list">
-    <ul>
+    </ul>
     <div class="count-container">
       <span class="todo-count">총0개</span>
       <ul class="filters">
