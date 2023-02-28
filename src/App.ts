@@ -1,23 +1,33 @@
-import { countcontainer } from './container/countcontainer';
+import { listContainer } from './container/listContainer';
 import { component } from './core/component';
-
+import { keys } from "./constants"
+interface todoListData {
+  id: number,
+  title: string,
+  completed: boolean
+}
 export class App extends component {
 
   setEvent() {
-    document.querySelector(".new-todo")?.addEventListener('keyup', (event) => {
-      let storageData = JSON.parse(localStorage.getItem('todos'));
-      if (event.keyCode !== 13 || !event.target.value) return;
-      const idx = new Date().getTime();
-      const insertdata: object = {
-        id: idx,
-        title: event.target?.value,
+    const input: HTMLInputElement = document.querySelector('.new-todo')!;
+    input?.addEventListener('keypress', (event: KeyboardEvent) => {
+
+      let storageData: todoListData[] = JSON.parse(localStorage.getItem(keys.key)!);
+
+      if (event.key !== "Enter" || !input.value) return;
+
+      const insertData: todoListData = {
+        id: new Date().getTime(),
+        title: input.value,
         completed: false
       }
-      if (storageData !== null) storageData.push(insertdata);
-      if (storageData === null) storageData = [insertdata];
-      localStorage.setItem("todos", JSON.stringify(storageData));
+
+      if (storageData !== null) storageData.push(insertData);
+      if (storageData === null) storageData = [insertData];
+
+      localStorage.setItem(keys.key, JSON.stringify(storageData));
       this.onMounted();
-      event.target.value = ''
+      input.value = ''
     })
   }
   template() {
@@ -46,6 +56,6 @@ export class App extends component {
     </div>`;
   }
   onMounted() {
-    new countcontainer({ element: document.querySelector('#todo-list') as HTMLElement });
+    new listContainer(document.querySelector('#todo-list')!);
   }
 }

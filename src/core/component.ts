@@ -1,7 +1,12 @@
+interface todoListData {
+  id: number,
+  title: string,
+  completed: boolean
+}
 export class component {
   $element: HTMLElement;
-  state: [{}];
-  constructor({ element }: HTMLElement) {
+  state?: todoListData[];
+  constructor(element: HTMLElement) {
     this.$element = element;
     this.setup();
     this.render();
@@ -11,7 +16,7 @@ export class component {
   setEvent() { }
   template() { return ''; }
   render() {
-    if (this.$element) this.$element.innerHTML = this.template();
+    this.$element.innerHTML = this.template();
     this.setEvent();
     this.onMounted();
   }
