@@ -5,24 +5,19 @@ export class countcontainer extends component {
   setup() {
     this.state = JSON.parse(localStorage.getItem('todos'));
   }
-
   template() {
-    let todoList: [] = [];
-    this.state?.forEach(({ title }) => {
-      todoList.push(title);
-    });
+    if (!this.state) return '';
     return `
-    ${todoList.map((title) => (
-      `<li class="false">
+    ${this.state?.map((data) => (
+      `<li id="${data.id}" class="false">
         <div class="view">
           <input type="checkbox" class="toggle">
           <label class="label">
-          ${title}
+          ${data.title}
           </label>
           <button class="destroy"></button>
         </div>
       </li>`
-    )).join("")}
-    `;
+    )).join("")}`;
   }
 }

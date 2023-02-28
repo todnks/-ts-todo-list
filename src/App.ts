@@ -7,7 +7,9 @@ export class App extends component {
     document.querySelector(".new-todo")?.addEventListener('keyup', (event) => {
       let storageData = JSON.parse(localStorage.getItem('todos'));
       if (event.keyCode !== 13 || !event.target.value) return;
+      const idx = new Date().getTime();
       const insertdata: object = {
+        id: idx,
         title: event.target?.value,
         completed: false
       }
