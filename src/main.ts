@@ -1,4 +1,5 @@
 import './style.css';
-import { App } from './App';
-const target: HTMLElement = document.querySelector('#app')!;
-new App(target);
+import App from './App';
+import { createRoot } from './core/Render';
+import { Selector } from './utills';
+createRoot(Selector('#app')).render(App);

@@ -1,48 +1,44 @@
-import { listContainer } from './container/listContainer';
-import { component } from './core/component';
-import { keys } from "./constants"
-interface todoListData {
-  id: number,
-  title: string,
-  completed: boolean
-}
-export class App extends component {
+import { TODO_STORAGE_KEY } from './constants';
+import { getItem, setItem } from './core/BaseStorage';
+import { todoListData } from './types/index';
+import { Title, TodoItem, Input } from './components';
+import { Selector } from "./utills";
+import { addEvent } from './core/Render';
+export default function App() {
 
-  setEvent() {
-    const input: HTMLInputElement = document.querySelector('.new-todo')!;
-    input?.addEventListener('keypress', (event: KeyboardEvent) => {
+  let storageData: todoListData[] = getItem(TODO_STORAGE_KEY.TODO_KEY);
 
-      let storageData: todoListData[] = JSON.parse(localStorage.getItem(keys.key)!);
-
-      if (event.key !== "Enter" || !input.value) return;
-
-      const insertData: todoListData = {
-        id: new Date().getTime(),
-        title: input.value,
-        completed: false
-      }
-
-      if (storageData !== null) storageData.push(insertData);
-      if (storageData === null) storageData = [insertData];
-
-      localStorage.setItem(keys.key, JSON.stringify(storageData));
-      this.onMounted();
-      input.value = ''
-    })
-  }
-  template() {
-    return `
+  addEvent(".new-todo", 'keypress', (e: KeyboardEvent) => {
+    const input = Selector<HTMLInputElement>(".new-todo");
+    if (e.key !== "Enter" || !input || !input.value) return;
+    const insertData: todoListData = {
+      id: new Date().getTime().toString(),
+      title: input.value,
+      completed: false
+    }
+    const newTodoList = storageData;
+    newTodoList.push(insertData);
+    setItem(TODO_STORAGE_KEY.TODO_KEY, newTodoList);
+    input.value = '';
+  })
+  return `
     <div class="todoapp">
-    <h1>TODOS</h1>
-    <input class="new-todo" placeholder="할일을 추가해주세요" autofocus>
+    ${Title('TODOS')}
+    ${Input({
+    type: 'text',
+    className: 'new-todo',
+    placeholder: '할일을 추가해주세요',
+    autofoucs: true
+  })}
     <main>
     <ul id="todo-list" class="todo-list">
+    ${TodoItem(storageData)}
     </ul>
     <div class="count-container">
-      <span class="todo-count">총0개</span>
+      <span class="todo-count">총${storageData.length}개</span>
       <ul class="filters">
         <li>
-          <a id="all" href="/#">전체보기</a>
+          <li id="all" data-href="/#">전체보기</a>
         </li>
         <li>
           <a id="active" href="/#active">해야할 일</a>
@@ -54,8 +50,4 @@ export class App extends component {
     </div>
     </main>
     </div>`;
-  }
-  onMounted() {
-    new listContainer(document.querySelector('#todo-list')!);
-  }
 }
