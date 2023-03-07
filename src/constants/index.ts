@@ -1,3 +1,3 @@
-export const keys = {
-  key: 'todos'
+export const TODO_STORAGE_KEY = {
+  TODO_KEY: 'todos'
 };
