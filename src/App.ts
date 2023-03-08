@@ -1,7 +1,7 @@
 import { TODO_STORAGE_KEY } from './constants';
 import { getItem, setItem } from './core/BaseStorage';
 import { todoListData } from './types/index';
-import { Title, TodoItem, Input } from './components';
+import { Title, TodoItem, Input, LinkButton } from './components';
 import { Selector } from "./utills";
 import { addEvent } from './core/Render';
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
     newTodoList.push(insertData);
     setItem(TODO_STORAGE_KEY.TODO_KEY, newTodoList);
     input.value = '';
-  })
+  });
   return `
     <div class="todoapp">
     ${Title('TODOS')}
@@ -38,13 +38,13 @@ export default function App() {
       <span class="todo-count">총${storageData.length}개</span>
       <ul class="filters">
         <li>
-          <li id="all" data-href="/#">전체보기</a>
+        ${LinkButton({ href: "/#", id: "all", value: "전체보기" })}
         </li>
         <li>
-          <a id="active" href="/#active">해야할 일</a>
+        ${LinkButton({ href: "/#active", id: "active", value: "해야할 일" })}
         </li>
         <li>
-          <a id="completed" href="/#completed">완료한 일</a>
+        ${LinkButton({ href: "/#completed", id: "completed", value: "완료한 일" })}
         </li>
       </ul>
     </div>
