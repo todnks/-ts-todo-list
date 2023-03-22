@@ -24,6 +24,7 @@ export default function App() {
 
   const hashName = location.hash.replace('#', '');
   const routes = {
+    '': storageData,
     '/': storageData,
     '/active': storageData.filter((data: todoListData) => data.completed === false),
     '/completed': storageData.filter((data: todoListData) => data.completed === true),
