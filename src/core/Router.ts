@@ -16,7 +16,7 @@ export default function Router() {
 
   const push = (path: string) => {
     const hashName = path.replace('#', '');
-    window.location.hash = findroute(hashName) === -1 ? '/404' : hashName;
+    window.location.hash = findroute(hashName) === -1 ? '/' : hashName;
   }
 
   const routing = () => {
