@@ -33,12 +33,15 @@ export default function TodoItem(props: todoListData[]) {
     targetClassList.classList.add('editing');
   });
 
-  addEvent('.todo-list', ('keypress'), (e: KeyboardEvent) => {
+  addEvent('.todo-list', ('keyup'), (e: KeyboardEvent) => {
 
     const targetList = Selector<HTMLElement>('.editing');
     if (!targetList) return;
 
     const input = Selector<HTMLInputElement>(".editing > .edit");
+    if (e.key === 'Escape') {
+      return targetList.classList.remove('editing');
+    }
     if (e.key !== "Enter" || !input) return;
     if (!input.value) return alert('내용을 입력해주세요');
 
