@@ -1,5 +1,5 @@
 import { SelectorAll } from "../utills";
-
+import { routeEvent } from './Router';
 interface IRenderContext {
   container: Element | null,
   rootComponent: () => string,
@@ -8,7 +8,7 @@ interface IRenderContext {
 type TEventStack = {
   target: string,
   eventType: string,
-  callback: () => void
+  callback: () => void,
 }
 
 function Render() {
@@ -21,6 +21,7 @@ function Render() {
     const { container, rootComponent } = RenderContext;
     if (container) {
       container.innerHTML = rootComponent();
+      routeEvent();
       subscribeEvent();
     }
   }
@@ -40,7 +41,7 @@ function Render() {
     RenderContext.eventStack.push({
       target,
       eventType,
-      callback
+      callback,
     })
   }
 
