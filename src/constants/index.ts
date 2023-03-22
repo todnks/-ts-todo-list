@@ -1,3 +1,3 @@
-export const TODO_STORAGE_KEY = {
+export const STORAGE_KEY = {
   TODO_KEY: 'todos'
 };
