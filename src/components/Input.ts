@@ -9,6 +9,7 @@ interface IInput {
   autofoucs?: boolean,
   data?: string,
   checked?: string,
+  placeholder?: string
 }
 
 export default function Input({ type, className, placeholder, autofoucs, data, checked, value }: IInput) {
