@@ -1,5 +1,5 @@
-import { STORAGE_KEY } from '../constants';
-import { getItem, setItem } from '../core/BaseStorage';
+
+import { getTodoItem, setTodoItem } from '../core/BaseStorage';
 import { addEvent } from '../core/Render';
 import { todoListData } from '../types';
 import { Selector, SelectorAll } from '../utills';
@@ -10,17 +10,17 @@ export default function TodoItem(props: todoListData[]) {
   addEvent('.todo-list', 'click', ({ target }: HTMLElement) => {
 
     if (target.className === 'destroy') {
-      const data: todoListData['id'] = getItem(STORAGE_KEY.TODO_KEY).filter((data: todoListData) => data.id.indexOf(target.dataset.id));
-      setItem(STORAGE_KEY.TODO_KEY, data);
+      const data: todoListData['id'] = getTodoItem().filter((data: todoListData) => data.id.indexOf(target.dataset.id));
+      setTodoItem(data);
     }
 
     if (target.className === 'toggle') {
-      const data: todoListData = getItem(STORAGE_KEY.TODO_KEY).find((data: todoListData) => data.id === target.dataset.id);
+      const data: todoListData = getTodoItem().find((data: todoListData) => data.id === target.dataset.id);
 
       if (!data.completed) { data.completed = true } else data.completed = false;
 
-      const newdata = getItem(STORAGE_KEY.TODO_KEY).map((obj: todoListData) => obj.id === data.id ? data : obj);
-      setItem(STORAGE_KEY.TODO_KEY, newdata);
+      const newdata = getTodoItem().map((obj: todoListData) => obj.id === data.id ? data : obj);
+      setTodoItem(newdata);
     }
   });
   addEvent('.todo-list', ('dblclick'), ({ target }: HTMLElement) => {
@@ -45,12 +45,12 @@ export default function TodoItem(props: todoListData[]) {
     if (e.key !== "Enter" || !input) return;
     if (!input.value) return alert('내용을 입력해주세요');
 
-    const data: todoListData = getItem(STORAGE_KEY.TODO_KEY).find((data: todoListData) => data.id === targetList.dataset.id);
+    const data: todoListData = getTodoItem().find((data: todoListData) => data.id === targetList.dataset.id);
     data.title = input.value;
 
-    const updatedListData = getItem(STORAGE_KEY.TODO_KEY).map((List: todoListData) => List.id === data.id ? data : List);
+    const updatedListData = getTodoItem().map((List: todoListData) => List.id === data.id ? data : List);
 
-    setItem(STORAGE_KEY.TODO_KEY, updatedListData);
+    setTodoItem(updatedListData);
   });
   return `
     ${props ? props.map((data) => (`

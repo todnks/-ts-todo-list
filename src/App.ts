@@ -1,12 +1,11 @@
-import { STORAGE_KEY } from './constants';
-import { getItem, setItem } from './core/BaseStorage';
+import { getTodoItem, setTodoItem } from './core/BaseStorage';
 import { todoListData } from './types/index';
 import { Title, TodoItem, Input, LinkButton } from './components';
 import { Selector } from "./utills";
 import { addEvent } from './core/Render';
 export default function App() {
 
-  let storageData: todoListData[] = getItem(STORAGE_KEY.TODO_KEY);
+  const storageData: todoListData[] = getTodoItem();
 
   addEvent(".new-todo", 'keypress', (e: KeyboardEvent) => {
     const input = Selector<HTMLInputElement>(".new-todo");
@@ -18,7 +17,7 @@ export default function App() {
     }
     const newTodoList = storageData;
     newTodoList.push(insertData);
-    setItem(STORAGE_KEY.TODO_KEY, newTodoList);
+    setTodoItem(newTodoList);
     input.value = '';
   });
 
@@ -31,6 +30,7 @@ export default function App() {
   };
   const findroutes = Object.keys(routes).findIndex((key) => key === hashName);
   const ListData = Object.values(routes)[findroutes];
+
   return `
     <div class="todoapp">
     ${Title('TODOS')}

@@ -1,25 +1,36 @@
+import { STORAGE_KEY } from '../constants';
 import { _render } from "./Render"
 
-interface stroage {
-  key: string,
-  stroage: Storage,
-}
-
 function BaseStorage() {
-  const getItem = (key: stroage['key']) => {
+
+  const getItem = (key: string) => {
+    if (!key) return [];
     const item = localStorage.getItem(key);
-    if (!item) return []
+    if (!item) return [];
     return JSON.parse(item);
   }
 
-  const setItem = <T>(key: stroage['key'], item: T) => {
+  const setItem = <T>(key: string, item: T) => {
     const data = JSON.stringify(item);
+    if (!key) return;
     localStorage.setItem(key, data);
     _render();
   }
+
+  const getTodoItem = () => {
+    return getItem(STORAGE_KEY.TODO_KEY);
+  }
+
+  const setTodoItem = <T>(item: T) => {
+    setItem(STORAGE_KEY.TODO_KEY, item);
+  }
+
   return {
     getItem,
-    setItem
+    setItem,
+    getTodoItem,
+    setTodoItem,
   }
 }
-export const { getItem, setItem } = BaseStorage();
+
+export const { getItem, setItem, getTodoItem, setTodoItem } = BaseStorage();
