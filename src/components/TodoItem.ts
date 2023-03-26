@@ -1,66 +1,44 @@
 
-import { getTodoItem, setTodoItem } from '../core/BaseStorage';
 import { addEvent } from '../core/Render';
+import { deleteTodoData, checkTodoData, editingBox, editingTodoData } from '../hooks/useTodoItem';
 import { todoListData } from '../types';
-import { Selector, SelectorAll } from '../utills';
+import Input from './Input';
 
 
 export default function TodoItem(todoItem: todoListData[]) {
 
   addEvent('.todo-list', 'click', ({ target }: HTMLElement) => {
-
     if (target.className === 'destroy') {
-      const data: todoListData['id'] = getTodoItem().filter((data: todoListData) => data.id.indexOf(target.dataset.id));
-      setTodoItem(data);
+      deleteTodoData(target.dataset.id);
     }
-
     if (target.className === 'toggle') {
-      const data: todoListData = getTodoItem().find((data: todoListData) => data.id === target.dataset.id);
-
-      if (!data.completed) { data.completed = true } else data.completed = false;
-
-      const newdata = getTodoItem().map((obj: todoListData) => obj.id === data.id ? data : obj);
-      setTodoItem(newdata);
+      checkTodoData(target.dataset.id);
     }
   });
+
   addEvent('.todo-list', ('dblclick'), ({ target }: HTMLElement) => {
-    if (target.tagName != 'LABEL') return;
-    const targetLists = SelectorAll<HTMLElement>('.editing');
-    if (targetLists.length >= 1) return alert('한번에 하나만 수정 할수있습니다');
-
     const targetClassList: HTMLElement = target.offsetParent;
-
-    targetClassList.classList.add('editing');
+    editingBox(target, targetClassList);
   });
 
-  addEvent('.todo-list', ('keyup'), (e: KeyboardEvent) => {
-
-    const targetList = Selector<HTMLElement>('.editing');
-    if (!targetList) return;
-
-    const input = Selector<HTMLInputElement>(".editing > .edit");
-    if (e.key === 'Escape') {
-      return targetList.classList.remove('editing');
-    }
-    if (e.key !== "Enter" || !input) return;
-    if (!input.value) return alert('내용을 입력해주세요');
-
-    const data: todoListData = getTodoItem().find((data: todoListData) => data.id === targetList.dataset.id);
-    data.title = input.value;
-
-    const updatedListData = getTodoItem().map((List: todoListData) => List.id === data.id ? data : List);
-
-    setTodoItem(updatedListData);
+  addEvent('.todo-list', ('keyup'), (keyboard: KeyboardEvent) => {
+    editingTodoData(keyboard.key);
   });
+
   return `
-    ${todoItem ? todoItem.map((data) => (`
-    <li data-id="${data.id}" class="${data.completed ? 'completed' : data.completed}">
+    ${todoItem ? todoItem.map((todoData) => (`
+    <li data-id="${todoData.id}" class="${todoData.completed ? 'completed' : todoData.completed}">
       <div class="view">
-        <input type="checkbox" class="toggle" data-id="${data.id}" ${data.completed ? 'checked' : data.completed}>
-        <label class="label">${data.title}</label>
-        <button class="destroy" data-id="${data.id}"></button>
+      ${Input({
+    type: 'checkbox',
+    className: 'toggle',
+    data: `${todoData.id}`,
+    checked: `${todoData.completed ? 'checked' : todoData.completed}`,
+  })}
+        <label class="label">${todoData.title}</label>
+        <button class="destroy" data-id="${todoData.id}"></button>
       </div>
-      <input class="edit" value="${data.title}"/>
+      ${Input({ type: 'text', className: 'edit', value: `${todoData.title}` })}
     </li>
     `)).join('') : ''}
     `;

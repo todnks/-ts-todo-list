@@ -1,26 +1,9 @@
-import { getTodoItem, setTodoItem } from './core/BaseStorage';
+import { getTodoItem } from './core/BaseStorage';
 import { todoListData } from './types/index';
 import { Title, TodoItem, Input, LinkButton } from './components';
-import { Selector } from "./utills";
-import { addEvent } from './core/Render';
 export default function App() {
 
   const storageData: todoListData[] = getTodoItem();
-
-  addEvent(".new-todo", 'keypress', (e: KeyboardEvent) => {
-    const input = Selector<HTMLInputElement>(".new-todo");
-    if (e.key !== "Enter" || !input || !input.value) return;
-    const insertData: todoListData = {
-      id: new Date().getTime().toString(),
-      title: input.value,
-      completed: false
-    }
-    const newTodoList = storageData;
-    newTodoList.push(insertData);
-    setTodoItem(newTodoList);
-    input.value = '';
-  });
-
   const hashName = location.hash.replace('#', '');
   const routes = {
     '': storageData,
