@@ -5,7 +5,7 @@ import { todoListData } from '../types';
 import { Selector, SelectorAll } from '../utills';
 
 
-export default function TodoItem(props: todoListData[]) {
+export default function TodoItem(todoItem: todoListData[]) {
 
   addEvent('.todo-list', 'click', ({ target }: HTMLElement) => {
 
@@ -53,7 +53,7 @@ export default function TodoItem(props: todoListData[]) {
     setTodoItem(updatedListData);
   });
   return `
-    ${props ? props.map((data) => (`
+    ${todoItem ? todoItem.map((data) => (`
     <li data-id="${data.id}" class="${data.completed ? 'completed' : data.completed}">
       <div class="view">
         <input type="checkbox" class="toggle" data-id="${data.id}" ${data.completed ? 'checked' : data.completed}>

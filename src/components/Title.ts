@@ -1,3 +1,3 @@
-export default function Title(props: string) {
-  return `<h1>${props}</h1>`;
+export default function Title(pageTitle: string) {
+  return `<h1>${pageTitle}</h1>`;
 }
