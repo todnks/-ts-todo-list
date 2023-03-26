@@ -1,4 +1,3 @@
-
 import { addEvent } from '../core/Render';
 import { deleteTodoData, checkTodoData, editingBox, editingTodoData } from '../hooks/useTodoItem';
 import { todoListData } from '../types';
@@ -17,8 +16,7 @@ export default function TodoItem(todoItem: todoListData[]) {
   });
 
   addEvent('.todo-list', ('dblclick'), ({ target }: HTMLElement) => {
-    const targetClassList: HTMLElement = target.offsetParent;
-    editingBox(target, targetClassList);
+    editingBox(target, target.offsetParent);
   });
 
   addEvent('.todo-list', ('keyup'), (keyboard: KeyboardEvent) => {

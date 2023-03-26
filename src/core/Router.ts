@@ -9,9 +9,8 @@ export default function Router() {
       if (hash) push(hash);
     });
     window.addEventListener('popstate', () => {
-      routing();
-    }, { once: true });
-
+      _render();
+    })
   }
 
   const push = (path: string) => {
@@ -19,17 +18,12 @@ export default function Router() {
     window.location.hash = findroute(hashName) === -1 ? '/' : hashName;
   }
 
-  const routing = () => {
-    _render();
-  }
-
   const findroute = (path: string) => {
     return routes.findIndex((key) => key === path);
   }
   return {
     routeEvent,
-    push,
-    routing
+    push
   }
 }
-export const { routeEvent, routing } = Router();
+export const { routeEvent } = Router();

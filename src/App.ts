@@ -1,19 +1,8 @@
-import { getTodoItem } from './core/BaseStorage';
-import { todoListData } from './types/index';
 import { Title, TodoItem, Input, LinkButton } from './components';
+import { _render } from './core/Render';
+import { getListData } from './hooks/useListData';
 export default function App() {
-
-  const storageData: todoListData[] = getTodoItem();
-  const hashName = location.hash.replace('#', '');
-  const routes = {
-    '': storageData,
-    '/': storageData,
-    '/active': storageData.filter((data: todoListData) => data.completed === false),
-    '/completed': storageData.filter((data: todoListData) => data.completed === true),
-  };
-  const findroutes = Object.keys(routes).findIndex((key) => key === hashName);
-  const ListData = Object.values(routes)[findroutes];
-
+  const ListData = getListData();
   return `
     <div class="todoapp">
     ${Title('TODOS')}
