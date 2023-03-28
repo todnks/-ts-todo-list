@@ -1,5 +1,4 @@
 import { SelectorAll } from "../utills";
-import { routeEvent } from './Router';
 interface IRenderContext {
   container: Element | null,
   rootComponent: () => string,
@@ -21,7 +20,6 @@ function Render() {
     const { container, rootComponent } = RenderContext;
     if (container) {
       container.innerHTML = rootComponent();
-      routeEvent();
       subscribeEvent();
     }
   }

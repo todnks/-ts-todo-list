@@ -1,8 +1,16 @@
 import { Title, TodoItem, Input, LinkButton } from './components';
-import { _render } from './core/Render';
+import { _render, addEvent } from './core/Render';
 import { getListData } from './hooks/useListData';
+import { listSetup } from './hooks/useTodoItem';
 export default function App() {
   const ListData = getListData();
+  addEvent('a', 'click', ({ target }: HTMLElement) => {
+    const { hash } = target.dataset;
+    if (hash) { listSetup(hash) }
+  });
+  window.addEventListener('popstate', () => {
+    _render();
+  }, { once: true });
   return `
     <div class="todoapp">
     ${Title('TODOS')}
@@ -10,7 +18,7 @@ export default function App() {
     type: 'text',
     className: 'new-todo',
     placeholder: '할일을 추가해주세요',
-    autofoucs: true
+    autofoucs: true,
   })}
     <main>
     <ul id="todo-list" class="todo-list">

@@ -62,13 +62,17 @@ export default function useTodoItem() {
       setTodoItem(updatedListData);
     }
   }
+  const listSetup = (href: string) => {
+    window.location.hash = href.replace('#', '');
+  }
 
   return {
     newTodoData,
     deleteTodoData,
     checkTodoData,
     editingBox,
-    editingTodoData
+    editingTodoData,
+    listSetup
   }
 }
-export const { newTodoData, deleteTodoData, checkTodoData, editingBox, editingTodoData } = useTodoItem();
+export const { newTodoData, deleteTodoData, checkTodoData, editingBox, editingTodoData, listSetup } = useTodoItem();

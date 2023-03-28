@@ -1,8 +1,7 @@
-import { addEvent } from '../core/Render';
+import { addEvent, _render } from '../core/Render';
 import { deleteTodoData, checkTodoData, editingBox, editingTodoData } from '../hooks/useTodoItem';
 import { todoListData } from '../types';
 import Input from './Input';
-
 
 export default function TodoItem(todoItem: todoListData[]) {
 
