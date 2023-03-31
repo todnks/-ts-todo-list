@@ -5,20 +5,9 @@ import { SelectorAll, Selector } from '../utills';
 export default function useTodoItem() {
   const {getItem, setItem} = BaseStorage('todos');
   const todoList : todoListData[] = getItem();
-  const newTodoData = (keyboard: string) => {
-    const data = todoList;
-    const input = Selector<HTMLInputElement>(".new-todo");
-
-    if (keyboard !== "Enter" || !input || !input.value) return;
-
-    const insertData: todoListData = {
-      id: new Date().getTime().toString(),
-      title: input.value,
-      completed: false
-    }
-    data.push(insertData);
-    setItem(data);
-    input.value = '';
+  const newTodoData = (data: todoListData) => {
+    todoList.push(data);
+    setItem(todoList);
   }
 
   const deleteTodoData = (datasetId: string) => {
