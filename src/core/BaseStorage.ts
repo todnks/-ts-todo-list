@@ -1,36 +1,20 @@
-import { STORAGE_KEY } from '../constants';
 import { _render } from "./Render"
 
-function BaseStorage() {
+export default function BaseStorage<T>(key: string, storage: Storage = localStorage)  {
 
-  const getItem = (key: string) => {
-    if (!key) return [];
-    const item = localStorage.getItem(key);
+  const getItem = () => {
+    const item = storage.getItem(key);
     if (!item) return [];
     return JSON.parse(item);
   }
 
-  const setItem = <T>(key: string, item: T) => {
+  const setItem = (item: T) => {
     const data = JSON.stringify(item);
-    if (!key) return;
-    localStorage.setItem(key, data);
+    storage.setItem(key, data);
     _render();
   }
-
-  const getTodoItem = () => {
-    return getItem(STORAGE_KEY.TODO_KEY);
-  }
-
-  const setTodoItem = <T>(item: T) => {
-    setItem(STORAGE_KEY.TODO_KEY, item);
-  }
-
   return {
     getItem,
     setItem,
-    getTodoItem,
-    setTodoItem,
   }
 }
-
-export const { getItem, setItem, getTodoItem, setTodoItem } = BaseStorage();

@@ -1,11 +1,12 @@
-import { setTodoItem, getTodoItem } from '../core/BaseStorage';
+import BaseStorage from '../core/BaseStorage';
 import { todoListData } from '../types';
 import { SelectorAll, Selector } from '../utills';
 
 export default function useTodoItem() {
-
+  const {getItem, setItem} = BaseStorage('todos');
+  const todoList : todoListData[] = getItem();
   const newTodoData = (keyboard: string) => {
-    const data = getTodoItem();
+    const data = todoList;
     const input = Selector<HTMLInputElement>(".new-todo");
 
     if (keyboard !== "Enter" || !input || !input.value) return;
@@ -16,23 +17,23 @@ export default function useTodoItem() {
       completed: false
     }
     data.push(insertData);
-    setTodoItem(data);
+    setItem(data);
     input.value = '';
   }
 
   const deleteTodoData = (datasetId: string) => {
-    const data: todoListData['id'] = getTodoItem().filter((data: todoListData) => data.id.indexOf(datasetId));
-    setTodoItem(data);
+    const data = todoList.filter((data: todoListData) => data.id.indexOf(datasetId));
+    setItem(data);
   }
 
   const checkTodoData = (datasetId: string) => {
 
-    const data: todoListData = getTodoItem().find((data: todoListData) => data.id === datasetId);
-
+    const data = todoList.find((data: todoListData) => data.id === datasetId) || null;
+    if(!data) return;
     if (!data.completed) { data.completed = true } else data.completed = false;
 
-    const newdata = getTodoItem().map((obj: todoListData) => obj.id === data.id ? data : obj);
-    setTodoItem(newdata);
+    const newdata = todoList.map((obj: todoListData) => obj.id === data.id ? data : obj);
+    setItem(newdata);
   }
 
   const editingBox = (target: HTMLElement, targetClassList: HTMLElement) => {
@@ -56,10 +57,11 @@ export default function useTodoItem() {
 
     if (keyboard === "Enter") {
       if (!input.value) return alert('내용을 입력해주세요');
-      const data: todoListData = getTodoItem().find((data: todoListData) => data.id === targetList.dataset.id);
+      const data = todoList.find((data: todoListData) => data.id === targetList.dataset.id) || null;
+      if(!data) return;
       data.title = input.value;
-      const updatedListData = getTodoItem().map((List: todoListData) => List.id === data.id ? data : List);
-      setTodoItem(updatedListData);
+      const updatedListData = todoList.map((List: todoListData) => List.id === data.id ? data : List);
+      setItem(updatedListData);
     }
   }
   const listSetup = (href: string) => {
