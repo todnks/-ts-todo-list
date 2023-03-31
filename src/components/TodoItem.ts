@@ -1,8 +1,8 @@
 import { addEvent, _render } from '../core/Render';
-import { deleteTodoData, checkTodoData, editingBox, editingTodoData } from '../hooks/useTodoItem';
+import { deleteTodoData, checkTodoData, editingTodoData } from '../hooks/useTodoItem';
 import { todoListData } from '../types';
+import { Selector, SelectorAll } from '../utills';
 import Input from './Input';
-
 export default function TodoItem(todoItem: todoListData[]) {
 
   addEvent('.todo-list', 'click', ({ target }: HTMLElement) => {
@@ -15,11 +15,27 @@ export default function TodoItem(todoItem: todoListData[]) {
   });
 
   addEvent('.todo-list', ('dblclick'), ({ target }: HTMLElement) => {
-    editingBox(target, target.offsetParent);
+    if(target.tagName != 'LABEL') return;
+    const editing : HTMLElement[] = SelectorAll<HTMLElement>('.editing');
+    if(editing.length >= 1){
+      return alert('한번에 한개씩만 입력해주세요');
+    };
+    return target.offsetParent.classList.add('editing');
   });
 
-  addEvent('.todo-list', ('keyup'), (keyboard: KeyboardEvent) => {
-    editingTodoData(keyboard.key);
+  addEvent('.todo-list', ('keyup'), (keyboard: KeyboardEvent & { target : HTMLInputElement } ) => {
+    const {target} = keyboard;
+    const targetList = Selector<HTMLElement>('.editing');
+    if(!targetList || !targetList.dataset.id) return alert('잘못된접근입니다');
+    if(keyboard.key === "Enter"){
+      if(!editingTodoData(targetList.dataset.id,target.value)){
+        return alert('존재하지않는글입니다');
+      }
+      alert('글수정완료');
+    }
+    if (keyboard.key === 'Escape') {
+      return targetList.classList.remove('editing');
+    }
   });
 
   return `

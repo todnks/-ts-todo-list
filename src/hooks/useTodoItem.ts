@@ -25,34 +25,14 @@ export default function useTodoItem() {
     setItem(newdata);
   }
 
-  const editingBox = (target: HTMLElement, targetClassList: HTMLElement) => {
-
-    if (target.tagName != 'LABEL') return;
-    const targetLists = SelectorAll<HTMLElement>('.editing');
-    if (targetLists.length >= 1) return alert('한번에 하나만 수정 할수있습니다');
-    targetClassList.classList.add('editing');
-  }
-
-  const editingTodoData = (keyboard: string) => {
-
-    const targetList = Selector<HTMLElement>('.editing');
-    const input = Selector<HTMLInputElement>(".editing > .edit");
-
-    if (!targetList || !input) return;
-
-    if (keyboard === 'Escape') {
-      return targetList.classList.remove('editing');
-    }
-
-    if (keyboard === "Enter") {
-      if (!input.value) return alert('내용을 입력해주세요');
-      const data = todoList.find((data: todoListData) => data.id === targetList.dataset.id) || null;
-      if(!data) return;
-      data.title = input.value;
-      const updatedListData = todoList.map((List: todoListData) => List.id === data.id ? data : List);
-      setItem(updatedListData);
-    }
-  }
+  const editingTodoData = (dataId: string , newData : string) => {
+    const data = todoList.find((data: todoListData) => data.id === dataId) || null;
+    if(!data) return false;
+    data.title = newData;
+    const updatedListData = todoList.map((List: todoListData) => List.id === data.id ? data : List);
+    setItem(updatedListData);
+    return true;
+}
   const listSetup = (href: string) => {
     window.location.hash = href.replace('#', '');
   }
