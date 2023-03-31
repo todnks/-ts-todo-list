@@ -13,11 +13,6 @@ interface IInput {
 }
 
 export default function Input({ type, className, placeholder, autofoucs, data, checked, value }: IInput) {
-
-  addEvent(".new-todo", 'keypress', (keyboard: KeyboardEvent) => {
-    newTodoData(keyboard.key);
-  });
-
   return `
     <input
       type="${type}"
